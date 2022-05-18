@@ -1,0 +1,52 @@
+service: serverless_task
+frameworkVersion: '3'
+variablesResolutionMode: 20210326
+plugins:
+  - serverless-webpack
+  - serverless-latest-layer-version
+
+
+custom:
+  webpack:
+    packager: yarn
+    includeModules:
+      forceExclude:
+        - aws-sdk
+  eventBus: ${opt:stage, 'dev'}-rc
+  eventBusArn: ${ssm:/pc/EVENT_BUS_ARN}/${self:custom.eventBus}
+  # table: ${opt:stage, 'dev'}-${self:service}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  architecture: arm64
+  versionFunctions: false
+  stage: ${opt:stage, 'dev'}
+  region: eu-west-1
+  lambdaHashingVersion: '20201221'
+  apiGateway:
+    shouldStartNameWithService: true
+  eventBridge:
+    useCloudFormation: true
+  layers: arn:aws:lambda:${aws:region}:${aws:accountId}:layer:${self:provider.stage}-slsDependencies:latest
+  vpc:
+    subnetIds:
+      - subnet-${ssm:/pc/SUBNET_ID_1}
+      - subnet-${ssm:/pc/SUBNET_ID_2}
+      - subnet-${ssm:/pc/SUBNET_ID_3}
+    securityGroupIds:
+      - sg-${ssm:/pc/SECURITY_GROUP_ID}
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - events:*
+          Resource: '*'
+
+  environment:
+    SERVICE_NAME: ${self:service}
+    EVENTS_BUS: ${self:custom.eventBus}
+    # DATABASE: ${self:custom.table}
+
+functions:
