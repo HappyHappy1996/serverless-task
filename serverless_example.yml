@@ -49,4 +49,5 @@ provider:
     EVENTS_BUS: ${self:custom.eventBus}
     # DATABASE: ${self:custom.table}
 
-functions:
+resources: ### Please fill this section with the appropriate resources
+functions: ### Please fill this section with the appropriate handlers
