@@ -3,7 +3,7 @@
 ## Objectives
 This is a task aiming to validate basic understanding of :
 - AWS services: Lambda/DynamoDB/EventBridge/API Gateway
-- Serverless framework
+- [Serverless framework](https://www.serverless.com/)
 
 ![image](https://user-images.githubusercontent.com/83964075/168245520-a8b70d11-7092-46a7-a685-9d8f57da4b1b.png)
 
