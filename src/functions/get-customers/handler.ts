@@ -8,8 +8,6 @@ import { schema } from './schema';
 const hello: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   const TableName = process.env.DYNAMODB_CUSTOMER_TABLE;
 
-  console.log(TableName);
-
   const scanParams = {
     TableName,
   };
@@ -31,7 +29,7 @@ const hello: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
     response: {
       total,
       items,
-    }
+    },
   });
 };
 

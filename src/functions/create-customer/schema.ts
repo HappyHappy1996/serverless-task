@@ -1,8 +1,8 @@
 export default {
-  type: "object",
+  type: 'object',
   properties: {
     primary_key: { type: 'string' },
-    email: { type: 'string' }
+    email: { type: 'string' },
   },
-  required: ['primary_key']
+  required: ['primary_key'],
 } as const;

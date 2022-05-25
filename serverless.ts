@@ -9,7 +9,7 @@ const serverlessConfiguration: AWS = {
   service: 'serverless-task',
   frameworkVersion: '3',
 
-  plugins: ['serverless-esbuild'],
+  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dynamodb-local'],
 
   provider: {
     name: 'aws',
@@ -27,19 +27,19 @@ const serverlessConfiguration: AWS = {
       role: {
         statements: [
           {
-            Effect: "Allow",
+            Effect: 'Allow',
             Action: [
-              "dynamodb:PutItem",
-              "dynamodb:Get*",
-              "dynamodb:Scan*",
-              "dynamodb:UpdateItem",
-              "dynamodb:DeleteItem"
+              'dynamodb:PutItem',
+              'dynamodb:Get*',
+              'dynamodb:Scan*',
+              'dynamodb:UpdateItem',
+              'dynamodb:DeleteItem',
             ],
-            Resource: "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-customerTable-${sls:stage}"
-          }
-        ]
-      }
-    }
+            Resource: 'arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-customerTable-${sls:stage}',
+          },
+        ],
+      },
+    },
   },
 
   functions,
@@ -56,6 +56,14 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
+    },
+    dynamodb:{
+      start:{
+        port: 5000,
+        inMemory: true,
+        migrate: true,
+      },
+      stages: 'dev',
     },
   },
 };

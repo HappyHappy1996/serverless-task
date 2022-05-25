@@ -1,0 +1,22 @@
+env:
+  node: true
+  mocha: true
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project: './tsconfig.json'
+plugins:
+  - '@typescript-eslint'
+extends:
+  - 'eslint:recommended'
+  - 'airbnb-typescript/base'
+  - 'plugin:@typescript-eslint/recommended-requiring-type-checking'
+rules:
+  function-paren-newline: [error, consistent]
+  import/prefer-default-export: off
+  import/extensions: off
+  import/no-extraneous-dependencies: off
+  '@typescript-eslint/no-unsafe-argument': off
+  '@typescript-eslint/no-unsafe-assignment': off

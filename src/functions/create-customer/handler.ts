@@ -14,9 +14,6 @@ const hello: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) =
     email: event.body.email,
   };
 
-  console.log(TableName);
-  console.log(Item);
-
   const putParams = {
     TableName,
     Item,
