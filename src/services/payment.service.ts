@@ -1,5 +1,5 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { Payment } from '../model/payment';
+import { Payment } from '../dtos/payment';
 
 type PaymentSource = 'vendor' | 'client';
 type PaymentProcessor = 'vendorHandler' | 'clientHandler';
@@ -21,7 +21,7 @@ interface PaymentModel extends Payment {
 export class PaymentService {
   private tableName: string = process.env.DYNAMODB_PAYMENT_TABLE;
 
-  constructor(private docClient: DocumentClient) {}
+  constructor(private documentClient: DocumentClient) {}
 
   async save(model: PaymentModel): Promise<void> {
     const putParams = {
@@ -29,7 +29,7 @@ export class PaymentService {
       Item: model,
     };
 
-    await this.docClient.put(putParams).promise();
+    await this.documentClient.put(putParams).promise();
   }
 
   static toModel(requestId: string, payment: Payment): PaymentModel {

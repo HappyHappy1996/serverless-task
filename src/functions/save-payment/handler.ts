@@ -3,7 +3,7 @@ import { formatJSONResponse } from '../../libs/api-gateway';
 import { middyfy } from '../../libs/lambda';
 import { paymentService } from '../../services';
 
-import { Payment } from '../../model/payment';
+import { Payment } from '../../dtos/payment';
 
 import schema from './schema';
 import { PaymentService } from '../../services/payment.service';
