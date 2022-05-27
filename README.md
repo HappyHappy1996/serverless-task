@@ -58,3 +58,11 @@ On events where source is Orbital, we add a  a `processedBy:'vendorHandler'` fie
 ### Event handler 1 : `payment.paymentSource == 'client'`
 
 On events where source is client, we add a `processedBy:'clientHandler'` field to our payment and save it in a DynamoDB table
+
+## Implementation
+
+POST /pay lambda is available at https://pt84vrtsu8.execute-api.us-east-1.amazonaws.com/dev/pay
+
+Instead of implementing 2 lambdas (`processVendorPayment` and `processClientPayment`) I decided to combine them into 1 `processPayment` lambda.
+
+As for primary key of `paymentTable` DynamoDB table I used `requestId` of incoming requests to `create-payment` lambda from APIGateway.
