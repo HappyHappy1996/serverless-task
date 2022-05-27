@@ -1,6 +1,5 @@
 import { AWS } from '@serverless/typescript';
 
-
 export const resources: AWS['resources'] =  {
   Resources: {
     PaymentTable: {
