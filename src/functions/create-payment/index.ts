@@ -1,6 +1,7 @@
+import { AWS } from '@serverless/typescript';
 import { handlerPath } from '../../libs/handler-resolver';
 
-export const savePayment = {
+export const createPayment: AWS['functions'][string] = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {

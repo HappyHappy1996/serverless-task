@@ -1,1 +1,2 @@
-export { savePayment } from './save-payment';
+export { createPayment } from './create-payment';
+export { processPayment } from './process-payment';

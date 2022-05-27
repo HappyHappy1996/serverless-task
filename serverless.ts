@@ -8,6 +8,7 @@ const serverlessConfiguration: AWS = {
   app: 'aws-node-http-api-project',
   service: 'serverless-task',
   frameworkVersion: '3',
+  configValidationMode: 'error',
 
   plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dynamodb-local'],
 
@@ -36,7 +37,15 @@ const serverlessConfiguration: AWS = {
               'dynamodb:UpdateItem',
               'dynamodb:DeleteItem',
             ],
-            Resource: 'arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-customerTable-${sls:stage}',
+            Resource: 'arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-paymentTable-${sls:stage}',
+          },
+          {
+            Effect: 'Allow',
+            Action: [
+              'events:DescribeEventBus',
+              'events:PutEvents',
+            ],
+            Resource: 'arn:aws:events:${aws:region}:*:*',
           },
         ],
       },

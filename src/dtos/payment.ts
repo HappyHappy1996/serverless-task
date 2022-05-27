@@ -4,3 +4,7 @@ export interface Payment {
   currency: string;
   amount: string;
 }
+
+export interface PaymentCreatedEvent extends Payment {
+  requestId: string;
+}

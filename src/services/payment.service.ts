@@ -1,5 +1,4 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { Payment } from '../dtos/payment';
+import { PaymentCreatedEvent } from '../dtos/payment';
 
 type PaymentSource = 'vendor' | 'client';
 type PaymentProcessor = 'vendorHandler' | 'clientHandler';
@@ -13,30 +12,21 @@ const PaymentSourceToProcessor: PaymentSourceToProcessorMap = {
   client: 'clientHandler',
 };
 
-interface PaymentModel extends Payment {
-  requestId: string;
-  processedBy: PaymentProcessor;
+interface PaymentModel extends PaymentCreatedEvent {
+  processedBy?: PaymentProcessor;
 }
 
 export class PaymentService {
-  private tableName: string = process.env.DYNAMODB_PAYMENT_TABLE;
+  static toModel(paymentCreatedEvent: PaymentCreatedEvent): PaymentModel {
+    const paymentProcessor: PaymentProcessor = PaymentSourceToProcessor[paymentCreatedEvent.paymentSource];
 
-  constructor(private documentClient: DocumentClient) {}
-
-  async save(model: PaymentModel): Promise<void> {
-    const putParams = {
-      TableName: this.tableName,
-      Item: model,
-    };
-
-    await this.documentClient.put(putParams).promise();
-  }
-
-  static toModel(requestId: string, payment: Payment): PaymentModel {
-    return {
-      requestId,
-      processedBy: PaymentSourceToProcessor[payment.paymentSource],
-      ...payment,
-    };
+    return Object.assign(
+      {},
+      // add 'processedBy' field if there is a matching paymentProcessor
+      paymentProcessor ? {
+        processedBy: paymentProcessor,
+      } : {},
+      paymentCreatedEvent,
+    );
   }
 }
