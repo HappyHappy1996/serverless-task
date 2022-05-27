@@ -61,7 +61,7 @@ On events where source is client, we add a `processedBy:'clientHandler'` field t
 
 ## Implementation
 
-POST /pay lambda is available at https://pt84vrtsu8.execute-api.us-east-1.amazonaws.com/dev/pay
+POST `/pay` lambda is available at https://pt84vrtsu8.execute-api.us-east-1.amazonaws.com/dev/pay
 
 Instead of implementing 2 lambdas (`processVendorPayment` and `processClientPayment`) I decided to combine them into 1 `processPayment` lambda.
 
