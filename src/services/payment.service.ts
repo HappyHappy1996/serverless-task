@@ -1,6 +1,10 @@
 import { PaymentCreatedEvent } from '../dtos/payment';
 
-type PaymentSource = 'vendor' | 'client';
+export enum PaymentSource {
+  vendor = 'vendor',
+  client = 'client',
+}
+
 type PaymentProcessor = 'vendorHandler' | 'clientHandler';
 
 type PaymentSourceToProcessorMap = {
@@ -8,8 +12,8 @@ type PaymentSourceToProcessorMap = {
 };
 
 const PaymentSourceToProcessor: PaymentSourceToProcessorMap = {
-  vendor: 'vendorHandler',
-  client: 'clientHandler',
+  [PaymentSource.vendor]: 'vendorHandler',
+  [PaymentSource.client]: 'clientHandler',
 };
 
 interface PaymentModel extends PaymentCreatedEvent {
@@ -18,14 +22,9 @@ interface PaymentModel extends PaymentCreatedEvent {
 
 export class PaymentService {
   static toModel(paymentCreatedEvent: PaymentCreatedEvent): PaymentModel {
-    const paymentProcessor: PaymentProcessor = PaymentSourceToProcessor[paymentCreatedEvent.paymentSource];
-
     return Object.assign(
       {},
-      // add 'processedBy' field if there is a matching paymentProcessor
-      paymentProcessor ? {
-        processedBy: paymentProcessor,
-      } : {},
+      { processedBy: PaymentSourceToProcessor[paymentCreatedEvent.paymentSource] },
       paymentCreatedEvent,
     );
   }
